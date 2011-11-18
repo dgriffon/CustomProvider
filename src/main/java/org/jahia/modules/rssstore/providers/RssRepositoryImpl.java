@@ -3,6 +3,8 @@ package org.jahia.modules.rssstore.providers;
 
 import javax.jcr.*;
 import java.util.*;
+
+import org.jahia.modules.rssstore.camel.RssBean;
 import org.jahia.services.content.nodetypes.ValueImpl;
 
 /**
@@ -69,6 +71,7 @@ public class RssRepositoryImpl implements Repository{
         add(Repository.OPTION_BASELINES_SUPPORTED);
 
     }};
+    private Map<String, RssBean> rssEntries;
 
     private void initDescriptors() {
 
@@ -130,6 +133,7 @@ public class RssRepositoryImpl implements Repository{
     
     public RssRepositoryImpl(String root) {
         this.root = root;
+        rssEntries = new LinkedHashMap<String, RssBean>();
         initDescriptors();
     }
 
@@ -188,5 +192,13 @@ public class RssRepositoryImpl implements Repository{
 
     public String getRoot() {
         return root;
+    }
+
+    public void setRssEntries(Map<String,RssBean> rssEntries) {
+        this.rssEntries = rssEntries;
+    }
+
+    public Map<String, RssBean> getRssEntries() {
+        return rssEntries;
     }
 }

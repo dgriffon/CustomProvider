@@ -1,6 +1,8 @@
 package org.jahia.modules.rssstore.providers;
 
+import org.jahia.modules.rssstore.camel.RssBean;
 import org.jahia.services.content.NodeIteratorImpl;
+import org.jahia.services.content.impl.vfs.PropertyIteratorImpl;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 
 import javax.jcr.*;
@@ -27,9 +29,15 @@ import java.util.Calendar;
  */
 public class RssNodeImpl extends RssItemImpl implements Node {
     private RssSessionImpl session;
+    private RssBean rssBean;
 
     public RssNodeImpl(RssSessionImpl session) {
         this.session = session;
+    }
+
+    public RssNodeImpl(RssSessionImpl session, RssBean rssBean) {
+        this.session = session;
+        this.rssBean = rssBean;
     }
 
     public Node addNode(String relPath) throws ItemExistsException, PathNotFoundException, VersionException, ConstraintViolationException, LockException, RepositoryException {
@@ -113,7 +121,7 @@ public class RssNodeImpl extends RssItemImpl implements Node {
     }
 
     public NodeIterator getNodes() throws RepositoryException {
-        return NodeIteratorImpl.EMPTY;  //To change body of implemented methods use File | Settings | File Templates.
+        return new RssNodeIterator((RssSessionImpl) getSession());
     }
 
     public NodeIterator getNodes(String namePattern) throws RepositoryException {
@@ -125,19 +133,19 @@ public class RssNodeImpl extends RssItemImpl implements Node {
     }
 
     public Property getProperty(String relPath) throws PathNotFoundException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new RssPropertyImpl(rssBean.getTitle());
     }
 
     public PropertyIterator getProperties() throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return PropertyIteratorImpl.EMPTY;
     }
 
     public PropertyIterator getProperties(String namePattern) throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return PropertyIteratorImpl.EMPTY;
     }
 
     public PropertyIterator getProperties(String[] nameGlobs) throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return PropertyIteratorImpl.EMPTY;
     }
 
     public Item getPrimaryItem() throws ItemNotFoundException, RepositoryException {
@@ -145,11 +153,14 @@ public class RssNodeImpl extends RssItemImpl implements Node {
     }
 
     public String getUUID() throws UnsupportedRepositoryOperationException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getIdentifier();
     }
 
     public String getIdentifier() throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if(rssBean==null) {
+            return ((RssRepositoryImpl)getSession().getRepository()).getRoot();
+        }
+        return rssBean.getUrl();
     }
 
     public int getIndex() throws RepositoryException {
@@ -317,11 +328,14 @@ public class RssNodeImpl extends RssItemImpl implements Node {
     }
 
     public String getPath() throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if(rssBean==null) {
+            return "/";
+        }
+        return "/"+rssBean.getUrl();
     }
 
     public String getName() throws RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return rssBean.getTitle();
     }
 
     public Item getAncestor(int depth) throws ItemNotFoundException, AccessDeniedException, RepositoryException {

@@ -31,6 +31,7 @@ public class RssStoreProvider extends JCRStoreProvider implements CamelContextAw
                     // add camel route
                     RssRoutesBuilder r = new RssRoutesBuilder();
                     r.setRssUrl(root.substring(root.indexOf(":") + 1));
+                    r.setRssRepositoryImpl((RssRepositoryImpl) repo);
                     try {
                         if (camelContext != null) {
                             camelContext.addRoutes(r);

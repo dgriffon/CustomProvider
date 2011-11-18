@@ -17,6 +17,12 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public class RssPropertyImpl extends RssItemImpl implements Property{
+    private final String value;
+
+    public RssPropertyImpl(String value) {
+        this.value = value;
+    }
+
     public void setValue(Value value) throws ValueFormatException, VersionException, LockException, ConstraintViolationException, RepositoryException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -74,7 +80,7 @@ public class RssPropertyImpl extends RssItemImpl implements Property{
     }
 
     public String getString() throws ValueFormatException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return value;
     }
 
     public InputStream getStream() throws ValueFormatException, RepositoryException {
@@ -110,11 +116,11 @@ public class RssPropertyImpl extends RssItemImpl implements Property{
     }
 
     public Property getProperty() throws ItemNotFoundException, ValueFormatException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     public long getLength() throws ValueFormatException, RepositoryException {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return value.length();
     }
 
     public long[] getLengths() throws ValueFormatException, RepositoryException {

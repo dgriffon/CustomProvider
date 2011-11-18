@@ -1,5 +1,7 @@
 package org.jahia.modules.rssstore.camel;
 
+import java.util.Date;
+
 /**
  * Created by IntelliJ IDEA.
  * User: david
@@ -11,6 +13,8 @@ public class RssBean {
     private String title;
     private String body;
     private String url;
+    private Date publishedDate;
+    private String author;
 
     public String getTitle() {
         return title;
@@ -34,5 +38,21 @@ public class RssBean {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Date getPublishedDate() {
+        return publishedDate;
     }
 }

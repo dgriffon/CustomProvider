@@ -1,5 +1,6 @@
 package org.jahia.modules.rssstore.providers;
 
+import org.apache.commons.lang.StringUtils;
 import org.jahia.services.content.JCRNodeWrapperImpl;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -61,19 +62,19 @@ public class RssSessionImpl implements Session{
     }
 
     public Node getNodeByUUID(String uuid) throws ItemNotFoundException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getNodeByIdentifier(uuid);
     }
 
     public Node getNodeByIdentifier(String id) throws ItemNotFoundException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getNode(id);
     }
 
     public Item getItem(String absPath) throws PathNotFoundException, RepositoryException {
-        return new RssNodeImpl(this);  //To change body of implemented methods use File | Settings | File Templates.
+        return new RssNodeImpl(this,repository.getRssEntries().get(StringUtils.substringAfter(absPath,"/")));
     }
 
     public Node getNode(String absPath) throws PathNotFoundException, RepositoryException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return (Node) getItem(absPath);
     }
 
     public Property getProperty(String absPath) throws PathNotFoundException, RepositoryException {

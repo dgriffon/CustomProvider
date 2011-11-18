@@ -6,12 +6,8 @@
     <bean id="rssStoreProvider" class="org.jahia.modules.rssstore.providers.RssStoreProvider"/>
     <bean id="rssContentStoreProvider" class="org.jahia.services.content.ExternalProvider">
         <property name="jcrStoreService" ref="JCRStoreService"/>
-        <property name="provider" ref="rssStoreProvider">
-        </property>
+        <property name="provider" ref="rssStoreProvider"/>
         <property name="prefix" value="rss:"/>
         <property name="key" value="rss"/>
-    </bean>
-    <bean id="rssBuilder" class="org.jahia.modules.rssstore.camel.RssRoutesBuilder">
-        <property name="rssUrl" value="http://www.clubic.com/articles.rss"/>
     </bean>
 </beans>
