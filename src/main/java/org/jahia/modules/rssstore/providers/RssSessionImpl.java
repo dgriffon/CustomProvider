@@ -40,7 +40,7 @@ public class RssSessionImpl extends ExternalProviderAbstractSessionImpl {
 
     @Override
     public Node getNodeByIdentifier(String id) throws ItemNotFoundException, RepositoryException {
-        return getNode(id);
+        return (Node) getItem(id);
     }
 
     @Override

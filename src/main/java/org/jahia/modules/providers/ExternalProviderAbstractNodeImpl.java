@@ -59,8 +59,8 @@ import java.util.Calendar;
  * @since : JAHIA 6.1
  *        Created : 11/21/11
  */
-public abstract class ExternamProviderAbstractNodeImpl extends ExternalProviderItemImpl implements Node {
-    private transient static Logger logger = Logger.getLogger(ExternamProviderAbstractNodeImpl.class);
+public abstract class ExternalProviderAbstractNodeImpl extends ExternalProviderItemImpl implements Node {
+    private transient static Logger logger = Logger.getLogger(ExternalProviderAbstractNodeImpl.class);
 
     public Node addNode(String relPath)
             throws ItemExistsException, PathNotFoundException, VersionException, ConstraintViolationException, LockException, RepositoryException {

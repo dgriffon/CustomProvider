@@ -1,1 +1,20 @@
-VFS Module
+Jahia 65 - How-to write an external provider
+
+ The entry point of your provider will be your store provider (a class extending <<org.jahia.moduleS.providers.ExternalProviderStoreProvider>>).
+ This class will be in charge of providing instances of your <<javax.jcr.Repository>> implementation.
+
+ The main goal of the Repository class is to define the capabilities of your Repository implementation and to login
+ users into your system. The login method should return an implementation of <<javax.jcr.Session>>
+ (you can use <<org.jahia.moduleS.providers.ExternalProviderAbstractSessionImpl>> as an helper).
+
+ The session should been able to return the root node of your repository, access a node by its path or its identifier at least.
+
+ Your node implementation should extends ExternalProviderAbstractNodeImpl this will ease your first steps of integration.
+ A node should return the list of its subnodes and its properties and definition same for the properties which should been
+ instances of ExternalProviderAbstractPropertyImpl.
+
+ The last class you need to provide is an implementation of NodeIterator to iterate through the childs of a node.
+
+ Each of your node type should have a corresponding definition in the cnd file of your module.
+
+
