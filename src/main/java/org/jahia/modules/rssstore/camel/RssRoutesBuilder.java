@@ -6,6 +6,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Handler;
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.jahia.modules.rssstore.providers.RssRepositoryImpl;
+import org.jahia.services.content.JCRContentUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,8 @@ public class RssRoutesBuilder extends SpringRouteBuilder {
         Map<String, RssBean> rssEntries = rssRepositoryImpl.getRssEntries();
         List<SyndEntryImpl> syndEntries = (List<SyndEntryImpl>) syndFeed.getEntries();
         for (SyndEntryImpl syndFeedEntry : syndEntries) {
-            if (!rssEntries.containsKey(syndFeedEntry.getLink())) {
+            String key = JCRContentUtils.generateNodeName(syndFeedEntry.getLink(), 64);
+            if (!rssEntries.containsKey(key)) {
                 System.out.println("syndFeedEntry.getTitle() = " + syndFeedEntry.getTitle());
                 RssBean rssBean = new RssBean();
                 rssBean.setTitle(syndFeedEntry.getTitle());
@@ -44,7 +46,7 @@ public class RssRoutesBuilder extends SpringRouteBuilder {
                 rssBean.setBody(syndFeedEntry.getDescription().getValue());
                 rssBean.setPublishedDate(syndFeedEntry.getPublishedDate());
                 rssBean.setAuthor(syndFeedEntry.getAuthor());
-                rssEntries.put(syndFeedEntry.getLink(), rssBean);
+                rssEntries.put(key, rssBean);
             }
         }
         rssRepositoryImpl.setRssEntries(rssEntries);

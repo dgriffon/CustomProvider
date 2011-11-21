@@ -2,9 +2,9 @@ package org.jahia.modules.rssstore.providers;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelContextAware;
-import org.apache.camel.RoutesBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.jahia.modules.providers.ExternalProviderStoreProvider;
 import org.jahia.modules.rssstore.camel.RssRoutesBuilder;
-import org.jahia.services.content.JCRStoreProvider;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -14,11 +14,9 @@ import javax.jcr.Repository;
  * A Rss Provider
  * .
  */
-public class RssStoreProvider extends JCRStoreProvider implements CamelContextAware {
+public class RssStoreProvider extends ExternalProviderStoreProvider implements CamelContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(RssStoreProvider.class);
-
-    private String root;
 
     static private CamelContext camelContext;
 
@@ -27,10 +25,11 @@ public class RssStoreProvider extends JCRStoreProvider implements CamelContextAw
         if (repo == null) {
             synchronized (RssStoreProvider.class) {
                 if (repo == null) {
+                    String root = getRoot();
                     repo = new RssRepositoryImpl(root);
                     // add camel route
                     RssRoutesBuilder r = new RssRoutesBuilder();
-                    r.setRssUrl(root.substring(root.indexOf(":") + 1));
+                    r.setRssUrl(StringUtils.substringAfter(root,"://"));
                     r.setRssRepositoryImpl((RssRepositoryImpl) repo);
                     try {
                         if (camelContext != null) {
@@ -43,14 +42,6 @@ public class RssStoreProvider extends JCRStoreProvider implements CamelContextAw
             }
         }
         return repo;
-    }
-
-    public String getRoot() {
-        return root;
-    }
-
-    public void setRoot(String root) {
-        this.root = root;
     }
 
     public CamelContext getCamelContext() {

@@ -37,7 +37,6 @@ import org.jahia.modules.rssstore.camel.RssBean;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Session;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -51,15 +50,17 @@ import java.util.Set;
  */
 public class RssNodeIterator implements NodeIterator {
     private transient static Logger logger = Logger.getLogger(RssNodeIterator.class);
-    private Iterator<Map.Entry<String, RssBean>> rssEntries;
-    private final RssSessionImpl session;
+    private Iterator<Map.Entry<String, RssBean>> rssEntries = null;
+    private RssSessionImpl session = null;
     private int size;
 
     public RssNodeIterator(RssSessionImpl session) {
-        this.session = session;
-        Set<Map.Entry<String, RssBean>> entries = ((RssRepositoryImpl) session.getRepository()).getRssEntries().entrySet();
-        size = entries.size();
-        rssEntries = entries.iterator();
+        if (session != null) {
+            this.session = session;
+            Set<Map.Entry<String, RssBean>> entries = ((RssRepositoryImpl) session.getRepository()).getRssEntries().entrySet();
+            size = entries.size();
+            rssEntries = entries.iterator();
+        }
     }
 
     /**
@@ -71,7 +72,7 @@ public class RssNodeIterator implements NodeIterator {
      *          <code>Node</code>s.
      */
     public Node nextNode() {
-        return new RssNodeImpl(session, rssEntries.next().getValue());
+        return new RSSProviderNodeImpl(session, rssEntries.next().getValue());
     }
 
     /**
@@ -124,7 +125,7 @@ public class RssNodeIterator implements NodeIterator {
      * @return <tt>true</tt> if the iterator has more elements.
      */
     public boolean hasNext() {
-        return rssEntries.hasNext();
+        return rssEntries != null && rssEntries.hasNext();
     }
 
     /**

@@ -1,4 +1,9 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 
-[jnt:rss] > jnt:content
+[jnt:rssEntry] > jnt:content, mix:title, jmix:droppableContent
+- jcr:title (string)
+- body (string, richtext)
+- url (string)
+- published (date)
+- author (string)
